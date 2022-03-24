@@ -1,30 +1,44 @@
-<?php 
+<?php
 
 require '../app/Entity/QCM.php';
 
-class QcmManager {
+class QcmManager
+{
     private $pdo;
 
-    public function __construct(){
-        try{
-            $this->pdo = new PDO('mysql:host=localhost;dbname=my_qcm_generator', 'root');
+    public function __construct()
+    {
+        try
+        {
+            $this->pdo = new PDO('mysql:host=localhost;dbname=my_qcm_generator','root');
         }
-        catch(PDOException $e){
+        catch(PDOException $e)
+        {
             echo 'Error : ' . $e->getMessage();
             die;
         }
     }
 
-    public function getALL(){
-        $req=$this->pdo->prepare('SELECT * FROM qcm');
+    public function getAll()
+    {
+        $sql = 'SELECT * FROM qcm';
+        $req = $this->pdo->prepare($sql);
         $req->execute();
-        return $req->fetchAll(PDO::FETCH_ASSOC);
-
         $qcms = $req->fetchAll(PDO::FETCH_ASSOC);
-        foreach($qcms as $qcm){
+        $result = [];
+        foreach($qcms as $qcm)
+        {
             $obj = new QCM();
+            $obj->setId($qcm['id']);
+            $obj->setTitle($qcm['title']);
+            $result[] = $obj;
         }
-    }
-}
 
-?>
+        return $result;
+    }
+
+
+
+
+
+}

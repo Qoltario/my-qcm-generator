@@ -2,9 +2,7 @@
 
 require '../app/Manager/QcmManager.php';
 
-$QuestionQcm = new QcmManager;
+$qcmManager = new QcmManager();
+$qcms = $qcmManager->getAll();
 
-$qcms = $QuestionQcm -> getAll();
-
-var_dump($qcms)
-?>
+require '../template/index.tpl.php';
