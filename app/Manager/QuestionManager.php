@@ -75,4 +75,11 @@ class QuestionManager
         $req = $this->pdo->prepare($sql);
         return $req->execute(compact('title', 'id_qcm', 'id'));     
     }
+
+    public function delete(int $id)
+    {
+        $sql = "DELETE FROM question WHERE id = :id";
+        $req = $this->pdo->prepare($sql);
+        return $req->execute(compact('id'));     
+    }
 }
