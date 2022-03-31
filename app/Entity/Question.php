@@ -3,15 +3,13 @@
 class Question
 {
 
+    private int $id;
     // TODO : ajouter les propriétés
     private string $title;
 
-    private array $answers;
+    private int $id_qcm;
 
-    public function __construct(string $title)
-    {
-        $this->setTitle($title);
-    }
+    private array $answers;
 
     /**
      * Get the value of title
@@ -46,5 +44,45 @@ class Question
     public function getAnswers()
     {
         return $this->answers;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_qcm
+     */ 
+    public function getIdQcm()
+    {
+        return $this->id_qcm;
+    }
+
+    /**
+     * Set the value of id_qcm
+     *
+     * @return  self
+     */ 
+    public function setIdQcm($id_qcm)
+    {
+        $this->id_qcm = $id_qcm;
+
+        return $this;
     }
 }
