@@ -2,7 +2,8 @@
 <div class="container">
     <h1>Mes réponses</h1>
 
-    <a href="/new-answer.php">Nouveau</a>
+    <a href="/new-answer.php">Nouvelle réponses</a>
+    <a href="/index-question.php">Retour sur les questions</a>
     <table border="1">
         <thead>
             <tr>
@@ -19,7 +20,6 @@
                 <td>
                     <a href="/edit-answer.php?id=<?= $answers->getId() ?>">Modifier</a>
                     <a href="/delete-answer.php?id=<?= $answers->getId() ?>">Supprimer</a>
-                    </form>
                 </td>
             </tr>
             <?php endforeach; ?>
