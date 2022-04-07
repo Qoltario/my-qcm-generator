@@ -1,51 +1,66 @@
 <?php
 
 require '../app/Entity/QCM.php';
+require_once '../app/Manager/Manager.php';
 
-class QcmManager
+class QcmManager extends Manager
 {
-    private $pdo;
-
-    public function __construct()
-    {
-        try
-        {
-            $this->pdo = new PDO('mysql:host=localhost;dbname=my_qcm_generator','root');
-        }
-        catch(PDOException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            die;
-        }
-    }
 
     public function getAll()
     {
         $sql = 'SELECT * FROM qcm';
-        $req = $this->pdo->prepare($sql);
+        $req = $this->getPdo()->prepare($sql);
         $req->execute();
         $qcms = $req->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
         foreach($qcms as $qcm)
         {
-            $obj = new QCM();
-            $obj->setId($qcm['id']);
-            $obj->setTitle($qcm['title']);
-            $result[] = $obj;
+            $result[] = (new QCM())->hydrate($qcm);
         }
 
         return $result;
     }
 
+        /**
+     * Recupère les infos d'un QCM via son id
+     * @param int $id
+     * 
+     * @return QCM
+     */
+    public function get(int $id) : QCM
+    {
+        $sql = "SELECT * FROM qcm WHERE id = :id";
+        $req = $this->getPdo()->prepare($sql);
+        $req->execute(compact('id'));
+        $result = $req->fetch(PDO::FETCH_ASSOC);
+        
+        $qcm = (new QCM())->hydrate($result);
+
+        return $qcm;
+    }
+
     public function insert(string $title) : int
     {
         $sql = "INSERT INTO qcm (title) VALUES (:title)";
-        $req = $this->pdo->prepare($sql);
+        $req = $this->getPdo()->prepare($sql);
         $req->execute([
             'title' => $title,
         ]);
 
-        return $this->pdo->lastInsertId();
+        return $this->getPdo()->lastInsertId();
     }
 
+    public function update(int $id, string $title)
+    {
+        $sql = "UPDATE qcm SET title = :title WHERE id = :id";
+        $req = $this->getPdo()->prepare($sql);
+        return $req->execute(compact('id','title'));
+    }
+
+    public function delete(int $id) : void
+    {
+        $sql = "DELETE FROM qcm WHERE id = :id";
+        $req = $this->getPdo()->prepare($sql);
+        $req->execute(['id' => $id]);
+    }
 }
